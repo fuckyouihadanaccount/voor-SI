@@ -35,9 +35,7 @@ def crop_and_resize(img, size=300):
     return img_resized
 
 #get images
-
-BASE_URL = "https://raw.githubusercontent.com/fuckyouihadanaccount/voor-SI/main/mugshot_detector-main/images/"
-
+BASE_URL = "https://raw.githubusercontent.com/fuckyouihadanaccount/voor-SI/main/mugshot_detector-main/fotos/images/"
 def load_image_from_github(filename):
     url = BASE_URL + filename
     response = requests.get(url)
@@ -122,7 +120,6 @@ IMG_FOLDER = r"C:\\Users\\elija\\Downloads\\Data Science\\Smart industry\\Colleg
 @st.cache_data
 def load_images(img_folder):
     aimages, cimages, dimages = [], [], []
-
     for filename in os.listdir(img_folder):
         if not filename.lower().endswith('.png'):
             continue  # skip non-PNG files
@@ -189,5 +186,6 @@ plt.close(fig)
 st.write('Output van het denoising model:')
 plot(dimages)
 plot(prediction.reshape(len(prediction), 28, 28))
+
 
 
