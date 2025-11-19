@@ -1,0 +1,20 @@
+def train_autoencoder(X_train_noisy, X_train):
+    input_image = Input(shape=(784,))
+    encoded = Dense(64, activation='relu')(input_image)
+    decoded = Dense(784, activation='sigmoid')(encoded)
+    autoencoder = Model(input_image, decoded)
+    autoencoder.compile(loss='binary_crossentropy', optimizer='adam')
+    autoencoder.fit(
+        X_train_noisy, X_train, 
+        epochs=100,
+        batch_size=512, 
+        validation_split=0.2, # Use a validation split of 20%,
+        verbose=False, # set verbose to false because we don't want to actually use any build logs. 
+        callbacks=[
+            EarlyStopping(monitor='val_loss', patience=5),
+            LambdaCallback(on_epoch_end=lambda e,l: print('{:.4f}'.format(l['val_loss']), end=' _ '))
+        ]
+    )
+    print(' _ ')
+    print('Training is complete!')
+    return autoencoder
