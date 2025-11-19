@@ -35,15 +35,27 @@ def crop_and_resize(img, size=300):
     return img_resized
 
 #get images
+
+BASE_URL = "https://raw.githubusercontent.com/fuckyouihadanaccount/voor-SI/main/mugshot_detector-main/images/"
+
+def load_image_from_github(filename):
+    url = BASE_URL + filename
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        raise ValueError(f"Could not load {url}")
+
+    # Load from bytes → PIL
+    img = Image.open(io.BytesIO(response.content)).convert("L")
+    return img  # return raw PIL image, not resized yet
+
 faceimages = ['00004_2_F.png','01546_1_F.png','01548_1_F.png','01549_1_F.png']
 fimages = []
-for x in faceimages:
-    if '.png' in x:
-        img = cv2.imread(x, cv2.IMREAD_GRAYSCALE)
-        img = Image.fromarray(img)
-        img = crop_and_resize(img, size=300)
-        img = np.array(img)
-        fimages.append(img)
+for filename in faceimages:
+    img = load_image_from_github(filename)
+    img = crop_and_resize(img, size=300)
+    img = np.array(img)
+    fimages.append(img)
 
 #get face
 # fig, ax = plt.subplots(1,4) 
@@ -177,4 +189,5 @@ plt.close(fig)
 st.write('Output van het denoising model:')
 plot(dimages)
 plot(prediction.reshape(len(prediction), 28, 28))
+
 
