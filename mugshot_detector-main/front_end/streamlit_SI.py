@@ -11,9 +11,6 @@ from PIL import Image
 import random
 import os
 
-os.chdir('C:\\Users\\elija\\Downloads\\Data Science\\Smart industry\\College 4')
-os.listdir()
-
 ##blurring
 def anonymize_face_simple(image, factor=3.0):
     (h, w) = image.shape[:2]
@@ -180,3 +177,4 @@ plt.close(fig)
 st.write('Output van het denoising model:')
 plot(dimages)
 plot(prediction.reshape(len(prediction), 28, 28))
+
